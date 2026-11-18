@@ -4,9 +4,9 @@
 
 Foi criada uma pipeline com GitHub Actions no arquivo de workflow dentro de `.github/workflows`. Ela é executada automaticamente a cada novo push na branch principal (`main`).
 
-Etapas da pipeline: checkout do código, configuração do Java com cache do Maven, build e testes com Maven e guarda do artefato gerado.
+O projeto é uma aplicação Node.js. A pipeline realiza as seguintes etapas: checkout do código, configuração do Node.js, instalação das dependências com npm e execução dos testes do projeto.
 
-Evidência: a aba Actions registrou a execução #1 do workflow "Pipeline", disparada pelo commit d182fd1 na branch main, concluída com sucesso em 20 segundos.
+Evidência: a aba Actions do repositório registra as execuções do workflow "Pipeline" na branch main, todas concluídas com sucesso. A execução #1 foi disparada pelo commit d182fd1, e as execuções #2 e #3 foram disparadas por novos commits (criação e atualização do ANALISE.md), o que comprova que a pipeline roda a cada novo push na main.
 
 ## 2. Análise de repositórios com pipeline
 
