@@ -2,11 +2,27 @@
 
 ## 1. Pipeline integrada ao projeto
 
-Foi criada uma pipeline com GitHub Actions no arquivo de workflow dentro de `.github/workflows`. Ela é executada automaticamente a cada novo push na branch principal (`main`).
+Foi criada uma pipeline com GitHub Actions no arquivo `.github/workflows/pipeline.yml`. Ela é executada automaticamente a cada novo push na branch principal (`main`), conforme o gatilho configurado:
 
-O projeto é uma aplicação Node.js. A pipeline realiza as seguintes etapas: checkout do código, configuração do Node.js, instalação das dependências com npm e execução dos testes do projeto.
+on:
+  push:
+    branches: [main]
 
-Evidência: a aba Actions do repositório registra as execuções do workflow "Pipeline" na branch main, todas concluídas com sucesso. A execução #1 foi disparada pelo commit d182fd1, e as execuções #2 e #3 foram disparadas por novos commits (criação e atualização do ANALISE.md), o que comprova que a pipeline roda a cada novo push na main.
+O projeto é uma aplicação Node.js (Node 22). A pipeline roda em uma máquina virtual `ubuntu-latest` e executa as seguintes etapas:
+
+| Etapa | O que faz |
+|---|---|
+| Baixar o código | Usa a Action `actions/checkout@v4` para trazer o código do repositório |
+| Preparar o Node.js | Usa a Action `actions/setup-node@v4` para instalar o Node 22 e ativar o cache do npm |
+| Instalar dependências | Executa `npm ci` |
+| Rodar os testes com cobertura | Executa `npm test` |
+| Gerar o site | Executa `npm run build` |
+| Guardar o relatório de cobertura | Usa a Action `actions/upload-artifact@v4` para salvar o relatório de cobertura como artefato da execução |
+| Publicar no GitHub Pages | Usa a Action `peaceiris/actions-gh-pages@v4` para publicar a pasta `dist` na branch `gh-pages` |
+
+Para que a Action de deploy consiga escrever na branch `gh-pages`, o workflow declara a permissão `contents: write`.
+
+Evidência: a aba Actions do repositório registra as execuções do workflow "Pipeline" na branch main, todas concluídas com sucesso. A execução #1 foi disparada pelo commit d182fd1, e as execuções seguintes foram disparadas por novos commits (criação e atualização do ANALISE.md), o que comprova que a pipeline roda a cada novo push na main.
 
 ## 2. Análise de repositórios com pipeline
 
